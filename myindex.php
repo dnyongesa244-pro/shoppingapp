@@ -112,48 +112,42 @@ $mysqli->close();
         </table>
         
     </section>
-    <script>
-        const price = document.querySelectorAll("#price");
+<script>
+    const trow = document.querySelectorAll(".items");
 
-        text = document.createTextNode("Buy");
-        let button = document.createElement('button');
-        button.textContent = 'Buy';
-        button.className = "buy";
-        button.style.color = 'green';
-        button.style.fontSize = '25px';
-        button.style.borderRadius = '3px';
-        button.style.border = '1px solid green';
-        button.style.backgroundColor = 'lightgrey';
-        button.style.marginTop = '5px';
-        button.style.marginLeft = '25%';
-        button.setAttribute('type', 'submit');
+    trow.forEach((rows) => {
+        rows.addEventListener('click', () => {
+            const productId = rows.querySelector("#pid").textContent;
+            const productName = rows.querySelector("td:nth-child(2)").textContent;
+            const availableQuantity = parseInt(rows.querySelector("td:nth-child(3)").textContent);
+            const price = parseFloat(rows.querySelector("#price").textContent);
 
+            // Ask the user if they want to buy the product
+            const wantToBuy = confirm(`Do you want to buy ${productName}?`);
 
-        const trow = document.querySelectorAll(".items");
-        trow.forEach((rows) => {
-            rows.addEventListener('click', (ele)=> {
-                document.body.appendChild(button);
-                const btn = document.querySelector('.buy');
-                btn.onclick = ()=>{
-                    // NB REPLACE TEXT addproduct.html with another
-                    // I guess it should redirect to a form where user enters product quantity to buy
-                    // on clicking the button it currently redirects to a random webpage
-                    // location.href = 'addproduct.html';
-                    location.href ='https://stackoverflow.com/questions/16562577/how-can-i-make-a-button-redirect-my-page-to-another-page'
+            if (wantToBuy) {
+                // Ask for the quantity
+                const quantity = prompt(`Enter the quantity of ${productName} you want to buy:`);
+
+                if (quantity !== null && !isNaN(quantity) && quantity > 0) {
+                    if (quantity <= availableQuantity) {
+                        // Calculate the total price
+                        const totalPrice = price * quantity;
+
+                        // Construct the URL with product details
+                        const url = `purchase.php?product_id=${productId}&product_name=${productName}&quantity=${quantity}&total_price=${totalPrice}`;
+
+                        // Navigate to the next page
+                        location.href = url;
+                    } else {
+                        alert(`Sorry, there are only ${availableQuantity} available for ${productName}.`);
+                    }
                 }
-                btn.addEventListener('mouseover', ()=>{
-                    btn.style.backgroundColor = 'lightgreen';
-                })
-                btn.addEventListener('mouseout', ()=>{
-                    btn.style.backgroundColor = 'lightgrey';
-                })
-            })
-            rows.addEventListener('dblclick', ()=>{
-                document.body.removeChild(button);
-            })
-        })
+            }
+        });
+    });
+</script>
 
-    </script>
 </body>
 </html>
 
