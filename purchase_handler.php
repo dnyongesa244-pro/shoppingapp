@@ -23,7 +23,8 @@ if (isset($_POST['confirm'])) {
     $price = $_POST['price'];
 
     // Insert purchase details into the 'sold_items' table
-    $sql = "INSERT INTO sold_items (product_id, product_name, quantity, price) VALUES ('$product_id', '$product_name', '$quantity', '$price')";
+    $sql = "INSERT INTO sold_items (product_id, product_name, quantity, price) VALUES ($product_id, '$product_name', $quantity, $price)";
+
     
     if ($mysqli->query($sql)) {
         // Successfully inserted into the database
